@@ -5,9 +5,12 @@
 import numpy as np
 
 # Chu does not know if label is one
-features = 483
+features = 482
+
+
 
 def read_one_file(filename):
+    max_id = 0
 
     file1 = open(filename, "r")
     # And for reading use
@@ -18,19 +21,40 @@ def read_one_file(filename):
 
     print('rows = ', rows)
 
-    output = np.zeros((rows,features))
+    outputX = np.zeros((rows,features))
+
+    outputY = []
 
     for i in range(rows):
         currrent_line = lines[i]
 
-        print('currrent_line')
+        line_items = currrent_line.split()
 
-        print(currrent_line)
+        num_items = len(line_items)
 
-        break
+        for j in range(num_items):
+            if j == 0:
+                prob = float(line_items[j])
+                if prob > 0.5:
+                    outputY.append(1)
+                else:
+                    outputY.append(0)
+            else:
+                item = line_items[j]
+                item_split = item.split(':')
+                feature_id = int(item_split[0])
+                if feature_id>max_id:
+                    max_id = feature_id
+                feature_value = int(item_split[1])
+                outputX[i,feature_id] = feature_value
 
-    print(output)
+    print('outputX')
+    print(outputX)
 
+    print('outputY')
+    print(outputY)
+
+    print('max_id = ', max_id)
 
 
 
