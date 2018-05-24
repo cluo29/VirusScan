@@ -5,7 +5,7 @@
 setwd("d:/Chu Doc/research/2018/meta learning/virus")
 
 
-train <- read.csv("2010-2013X.csv")
+train <- read.csv("2010-2013X.csv",  header = FALSE)
 
 for (i in c(1:479)){
   
@@ -30,7 +30,7 @@ uniqueCount= nrow(uniqueSet)
 uniqueItems = as.data.frame(train[,21])
 
 
-test <- read.csv("2014X.csv")
+test <- read.csv("2014X.csv", header = FALSE)
 
 
 uniqueSet = as.data.frame(unique(test[,21]))
