@@ -5,7 +5,7 @@
 
 from numpy import genfromtxt
 import numpy as np
-
+import feature_impact
 
 
 def make_random_missing (inputSet, column, rate_of_missing=0.1):
@@ -68,3 +68,39 @@ print(len(testY))
 #print(outputSet)
 
 #np.savetxt("testMissX.csv", outputSet, delimiter=",", fmt='%i')
+
+detector = feature_impact.Detector_C(2, tree_max=200)
+
+# feature values
+X_train = trainX
+
+# class labels
+Y_train = trainY
+
+# 0 is timestamp of training set
+detector.train(X_train,Y_train,0)
+
+FI_output = detector.get_FI()
+
+print("FI_list =")
+print(FI_output)
+
+FI_list = detector.measure_FI(testX[0] ,testY[0] ,5)
+
+print("FI_change =")
+print(FI_list)
+
+
+"""
+
+
+X_train2 = np.array([[0,0,0,0],[0,0,1,0]])
+
+Y_train2 = np.array([2,1])
+
+# 5 is timestamp of test set
+FI_list = detector.measure_FI(X_train2,Y_train2,5)
+
+print("FI_list = ", FI_list)
+
+"""
