@@ -55,6 +55,8 @@ print(len(testX))
 
 testY = genfromtxt('2014Y.csv', delimiter=',')
 
+testY = testY.reshape(testY.shape[0],-1)
+
 print(testY)
 
 print(len(testY))
@@ -85,14 +87,24 @@ FI_output = detector.get_FI()
 print("FI_list =")
 print(FI_output)
 
-FI_list = detector.measure_FI(testX[0] ,testY[0] ,5)
+#
+
+testXItem=testX[0]
+testXItem=np.array([testXItem])
+
+testYItem=testY[0]
+testYItem=np.array([testYItem])
+
+FI_list = detector.measure_FI(testXItem ,testYItem ,5)
 
 print("FI_change =")
 print(FI_list)
 
 
-"""
 
+
+"""
+dict['Name']
 
 X_train2 = np.array([[0,0,0,0],[0,0,1,0]])
 
