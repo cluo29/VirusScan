@@ -44,6 +44,19 @@ def mode_impute(inputSet, column_id, label):
 
 def hot_deck_impute(inputSet, column_id, label):
      missing_label = int(label)
+     a = np.array(inputSet)
+     rows = len(a)
+     last_observation = -1
+     for i in range(rows):
+         if a[i, column_id] == label:
+             a[i, column_id] = last_observation
+             # make sure a[0,column_id] is not missing
+         else:
+             last_observation = a[i, column_id]
+     return a
+
+
+
 
 
 # then regression impute
@@ -52,8 +65,8 @@ def hot_deck_impute(inputSet, column_id, label):
 
 # test
 
-a = np.array([[1, 2, -1], [3, 4, 5], [6, 6, 5],[6, 6, 6], [1, 9, -1]], dtype='f')
+a = np.array([[1, 2, 5], [3, 4, -1], [6, 6, 5],[6, 6, 6], [1, 9, -1]], dtype='f')
 
-b = mode_impute(a,2,-1)
+b = hot_deck_impute(a,2,-1)
 
 print(b)
