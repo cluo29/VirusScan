@@ -1,6 +1,7 @@
 # MDImpute.py
 # Chu Luo
 import numpy as np
+from scipy import stats
 
 # first, mode, mean, median, hot deck impute.
 
@@ -22,7 +23,7 @@ def median_impute(inputSet, column_id, label):
     a = np.array(inputSet)
     valid_set = a[a[:, column_id] != missing_label]
 
-    # get mean of complete rows
+    # get median of complete rows
 
     median = np.median(valid_set[:, column_id])
 
@@ -32,6 +33,14 @@ def median_impute(inputSet, column_id, label):
 
 def mode_impute(inputSet, column_id, label):
     missing_label = int(label)
+    a = np.array(inputSet)
+    valid_set = a[a[:, column_id] != missing_label]
+
+    mode, count = stats.mode(valid_set[:, column_id])
+
+    a[a[:, column_id] == missing_label, column_id] = mode
+
+    return a
 
 def hot_deck_impute(inputSet, column_id, label):
      missing_label = int(label)
@@ -43,8 +52,8 @@ def hot_deck_impute(inputSet, column_id, label):
 
 # test
 
-a = np.array([[1, 2, -1], [3, 4, 5], [6, 6, 61],[6, 6, 6], [1, 9, -1]], dtype='f')
+a = np.array([[1, 2, -1], [3, 4, 5], [6, 6, 5],[6, 6, 6], [1, 9, -1]], dtype='f')
 
-b = median_impute(a,2,-1)
+b = mode_impute(a,2,-1)
 
 print(b)
