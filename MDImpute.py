@@ -2,7 +2,7 @@
 # Chu Luo
 import numpy as np
 from scipy import stats
-from sklearn import linear_model
+from sklearn import *
 
 # first, mode, mean, median, hot deck impute.
 
@@ -85,14 +85,45 @@ def lr_impute(inputSet, column_id, label):
 
     return a
 
-# then regression impute
+def knn_impute(inputSet, column_id, label):
+    missing_label = int(label)
+    a = np.array(inputSet)
+    valid_set = a[a[:, column_id] != missing_label]
+    invalid_set = a[a[:, column_id] == missing_label]
+
+    X_train = np.delete(valid_set, column_id, 1)
+
+    Y_train = valid_set[:, column_id]
+
+    regr = neighbors.KNeighborsRegressor( n_neighbors=10)
+
+    # Train the model using the training sets
+    regr.fit(X_train, Y_train)
+
+    X_test = np.delete(invalid_set, column_id, 1)
+
+    Y_test = regr.predict(X_test)
+
+    rows = len(a)
+    imputation_count = 0
+    for i in range(rows):
+        if a[i, column_id] == label:
+            a[i, column_id] = Y_test[imputation_count]
+            imputation_count = imputation_count + 1
+
+    return a
+
+def MLP_impute(inputSet, column_id, label):
+    missing_label = int(label)
 
 # finally, our feature impact impute
 
 # test
 
-a = np.array([[1, 2, 5], [3, 4, -1], [6, 6, 5], [6, 6, 6], [1, 9, -1]], dtype='f')
+a = np.array([[1, 2, 5], [6, 6, -1], [6, 6, 5], [6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6],[6, 6, 6], [6, 6, -1]], dtype='f')
 
-b = lr_impute(a, 2, -1)
+print(a)
+
+b = knn_impute(a, 2, -1)
 
 print(b)
