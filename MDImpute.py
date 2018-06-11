@@ -152,7 +152,7 @@ def MLP_impute(inputSet, column_id, label):
 
 
 
-# finally, our feature impact impute
+# finally, our feature impact impute, actually it is an impute evaluator
 def FI_impute():
     print('TODO')
 
